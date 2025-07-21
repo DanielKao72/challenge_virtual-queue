@@ -1,3 +1,5 @@
+import java.util.Queue;
+
 public class Main {
     public static void main(String[] args) {
         // Reto para el desarrollador:
@@ -14,13 +16,73 @@ public class Main {
         System.out.println("Reto: Simulación de cola de atención prioritaria");
 
         // Ejemplo de uso (a completar por el desarrollador):
-        // QueueManager queueManager = new QueueManager();
-        // queueManager.addPerson("Persona 1", 30, false);
-        // queueManager.addPerson("Adulto Mayor 1", 70, false);
-        // queueManager.processQueue();
+        QueueManager queueManager = new QueueManager();
+        queueManager.addPerson("Persona 1", 30, false);
+        queueManager.addPerson("Adulto Mayor 1", 70, false);
+        System.out.println("Atendiendo a las personas en la cola...");
+        queueManager.processQueue();
     }
 }
 
 // Implementar la clase Person aquí (reto)
+class Person {
+    private String name;
+    private int age;
+    private boolean hasDisability;
+
+    public Person(String name, int age, boolean hasDisability) {
+        this.name = name;
+        this.age = age;
+        this.hasDisability = hasDisability;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public boolean hasDisability() {
+        return hasDisability;
+    }
+}
 
 // Implementar la clase QueueManager aquí (reto)
+class QueueManager {
+    private Queue<Person> priorityQueue;
+    private Queue<Person> regularQueue;
+
+    public QueueManager() {
+        this.priorityQueue = new java.util.LinkedList<>();
+        this.regularQueue = new java.util.LinkedList<>();
+    }
+
+    public void addPerson(String name, int age, boolean hasDisability) {
+        Person person = new Person(name, age, hasDisability);
+
+        if (age >= 60 || hasDisability) {
+            priorityQueue.add(person);
+            System.out.println("Añadiendo a la cola prioritaria: " + person.getName());
+        }
+        else {
+            regularQueue.add(person);
+            System.out.println("Añadiendo a la cola regular: " + person.getName());
+        }
+
+        return;
+    }
+
+    public void processQueue() {
+        while (!priorityQueue.isEmpty()) {
+            Person person = priorityQueue.poll();
+            System.out.println("Atendiendo a: " + person.getName() + " (Prioridad)");
+        }
+
+        while (!regularQueue.isEmpty()) {
+            Person person = regularQueue.poll();
+            System.out.println("Atendiendo a: " + person.getName() + " (Regular)");
+        }
+    }
+}
